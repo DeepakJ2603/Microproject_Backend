@@ -7,7 +7,6 @@ public class ApiResponse<T> {
     private String  message;
     private T       data;
 
-    // ── constructors ──────────────────────────────────────────────────────────
     public ApiResponse() {}
 
     public ApiResponse(boolean success, String message, T data) {
@@ -16,7 +15,6 @@ public class ApiResponse<T> {
         this.data    = data;
     }
 
-    // ── static factory helpers ────────────────────────────────────────────────
     public static <T> ApiResponse<T> ok(String message, T data) {
         return new ApiResponse<>(true, message, data);
     }
@@ -25,7 +23,6 @@ public class ApiResponse<T> {
         return new ApiResponse<>(false, message, null);
     }
 
-    // ── getters & setters ─────────────────────────────────────────────────────
     public boolean isSuccess()           { return success; }
     public void    setSuccess(boolean s) { this.success = s; }
 

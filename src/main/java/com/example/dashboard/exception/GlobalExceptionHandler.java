@@ -20,7 +20,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // ── 404 Not Found ─────────────────────────────────────────────────────────
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleNotFound(
             ResourceNotFoundException ex) {
@@ -29,7 +28,6 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error(ex.getMessage()));
     }
 
-    // ── 400 Bad Request ───────────────────────────────────────────────────────
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ApiResponse<Void>> handleBadRequest(
             BadRequestException ex) {
@@ -38,7 +36,6 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error(ex.getMessage()));
     }
 
-    // ── 401 Invalid Credentials ───────────────────────────────────────────────
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiResponse<Void>> handleBadCredentials(
             BadCredentialsException ex) {
@@ -47,7 +44,6 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error("Invalid email or password"));
     }
 
-    // ── 401 Account Disabled ──────────────────────────────────────────────────
     @ExceptionHandler(DisabledException.class)
     public ResponseEntity<ApiResponse<Void>> handleDisabled(DisabledException ex) {
         return ResponseEntity
@@ -55,7 +51,6 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error("Account is disabled"));
     }
 
-    // ── 401 Account Locked ────────────────────────────────────────────────────
     @ExceptionHandler(LockedException.class)
     public ResponseEntity<ApiResponse<Void>> handleLocked(LockedException ex) {
         return ResponseEntity
@@ -63,7 +58,6 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error("Account is locked"));
     }
 
-    // ── 403 Access Denied ─────────────────────────────────────────────────────
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ApiResponse<Void>> handleAccessDenied(
             AccessDeniedException ex) {
@@ -73,7 +67,6 @@ public class GlobalExceptionHandler {
                         "Access denied. You do not have permission to perform this action."));
     }
 
-    // ── 400 Validation Errors (field-level) ───────────────────────────────────
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Map<String, String>>> handleValidation(
             MethodArgumentNotValidException ex) {
@@ -86,7 +79,6 @@ public class GlobalExceptionHandler {
                 .body(new ApiResponse<>(false, "Validation failed", errors));
     }
 
-    // ── 400 Missing Request Parameter ─────────────────────────────────────────
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ApiResponse<Void>> handleMissingParam(
             MissingServletRequestParameterException ex) {
@@ -96,7 +88,6 @@ public class GlobalExceptionHandler {
                         "Missing required parameter: " + ex.getParameterName()));
     }
 
-    // ── 400 Wrong Type in Path Variable / Request Param ───────────────────────
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ApiResponse<Void>> handleTypeMismatch(
             MethodArgumentTypeMismatchException ex) {
@@ -107,7 +98,6 @@ public class GlobalExceptionHandler {
                         + "' for parameter '" + ex.getName() + "'"));
     }
 
-    // ── 500 Generic Fallback ──────────────────────────────────────────────────
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleGeneral(Exception ex) {
         return ResponseEntity

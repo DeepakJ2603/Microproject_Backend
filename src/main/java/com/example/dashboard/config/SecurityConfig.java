@@ -29,28 +29,26 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final JwtAuthFilter          jwtAuthFilter;
+    private final JwtAuthFilter jwtAuthFilter;
     private final UserDetailsServiceImpl userDetailsService;
-    private final OAuth2SuccessHandler   oAuth2SuccessHandler;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Value("${app.cors.allowed-origins}")
     private String allowedOrigins;
 
     public SecurityConfig(JwtAuthFilter jwtAuthFilter,
-                          UserDetailsServiceImpl userDetailsService,
-                          OAuth2SuccessHandler oAuth2SuccessHandler) {
-        this.jwtAuthFilter        = jwtAuthFilter;
-        this.userDetailsService   = userDetailsService;
+            UserDetailsServiceImpl userDetailsService,
+            OAuth2SuccessHandler oAuth2SuccessHandler) {
+        this.jwtAuthFilter = jwtAuthFilter;
+        this.userDetailsService = userDetailsService;
         this.oAuth2SuccessHandler = oAuth2SuccessHandler;
     }
 
-    // ── Password Encoder ──────────────────────────────────────────────────────
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // ── Auth Provider ─────────────────────────────────────────────────────────
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -59,14 +57,12 @@ public class SecurityConfig {
         return provider;
     }
 
-    // ── Auth Manager ──────────────────────────────────────────────────────────
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
-    // ── CORS Config ───────────────────────────────────────────────────────────
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
@@ -80,46 +76,37 @@ public class SecurityConfig {
         return source;
     }
 
-    // ── Security Filter Chain ─────────────────────────────────────────────────
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .sessionManagement(session ->
-                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
 
-                // ── Public endpoints ──────────────────────────────────────────
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers(
-                	    "/swagger-ui/**",
-                	    "/swagger-ui.html",
-                	    "/v3/api-docs/**",
-                	    "/v3/api-docs.yaml"
-                	).permitAll()
-                .requestMatchers("/login/oauth2/**", "/oauth2/**").permitAll()
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml")
+                        .permitAll()
+                        .requestMatchers("/login/oauth2/**", "/oauth2/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                // ── Super Admin only ──────────────────────────────────────────
-                .requestMatchers("/api/admin/**").hasRole("SUPER_ADMIN")
+                        .requestMatchers("/api/admin/**").hasRole("SUPER_ADMIN")
 
-                // ── Manager + Super Admin ─────────────────────────────────────
-                .requestMatchers("/api/manager/**").hasAnyRole("SUPER_ADMIN", "MANAGER")
+                        .requestMatchers("/api/manager/**").hasAnyRole("SUPER_ADMIN", "MANAGER")
 
-                // ── Developer + Manager + Super Admin ─────────────────────────
-                .requestMatchers("/api/developer/**")
+                        .requestMatchers("/api/developer/**")
                         .hasAnyRole("SUPER_ADMIN", "MANAGER", "DEVELOPER")
 
-                // ── Everything else needs authentication ──────────────────────
-                .anyRequest().authenticated()
-            )
-            .oauth2Login(oauth2 -> oauth2
-                    .successHandler(oAuth2SuccessHandler)
-            )
-            .authenticationProvider(authenticationProvider())
-            .addFilterBefore(jwtAuthFilter,
-                    UsernamePasswordAuthenticationFilter.class);
+                        .anyRequest().authenticated())
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(oAuth2SuccessHandler))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter,
+                        UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

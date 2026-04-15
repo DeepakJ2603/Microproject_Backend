@@ -9,7 +9,6 @@ public class AuthResponse {
     private String fullName;
     private String avatarUrl;
 
-    // ── Constructors ──────────────────────────────────────────────────────────
     public AuthResponse() {}
 
     public AuthResponse(String token,
@@ -26,7 +25,6 @@ public class AuthResponse {
         this.avatarUrl = avatarUrl;
     }
 
-    // ── Getters & Setters ─────────────────────────────────────────────────────
     public String getToken()              { return token; }
     public void   setToken(String t)      { this.token = t; }
 

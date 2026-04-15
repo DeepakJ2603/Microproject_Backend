@@ -15,10 +15,8 @@ public class TeamResponse {
     private BigDecimal           totalProductivityScore;
     private LocalDateTime        createdAt;
 
-    // ── Constructors ──────────────────────────────────────────────────────────
     public TeamResponse() {}
 
-    // ── Getters & Setters ─────────────────────────────────────────────────────
     public Long getId()                                  { return id; }
     public void setId(Long id)                           { this.id = id; }
 

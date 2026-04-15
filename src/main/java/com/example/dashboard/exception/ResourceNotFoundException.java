@@ -11,7 +11,6 @@ public class ResourceNotFoundException extends RuntimeException {
     private final String fieldName;
     private final Object fieldValue;
 
-    // ── simple message constructor ────────────────────────────────────────────
     public ResourceNotFoundException(String message) {
         super(message);
         this.resourceName = "";
@@ -19,7 +18,6 @@ public class ResourceNotFoundException extends RuntimeException {
         this.fieldValue   = "";
     }
 
-    // ── detailed constructor ──────────────────────────────────────────────────
     public ResourceNotFoundException(String resourceName,
                                      String fieldName,
                                      Object fieldValue) {

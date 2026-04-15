@@ -63,14 +63,12 @@ public class DeveloperController {
 
 	}
 
-	// ── Get all metrics ───────────────────────────────────────────────────────
 	@GetMapping("/metrics")
 	public ResponseEntity<ApiResponse<List<ProductivityMetric>>> getMetrics(@AuthenticationPrincipal UserDetails ud) {
 		Developer dev = getDeveloper(ud);
 		return ResponseEntity.ok(ApiResponse.ok("Metrics retrieved", productivityService.getMetricsForUser(dev)));
 	}
 
-	// ── Save / update metric ──────────────────────────────────────────────────
 	@PostMapping("/metrics")
 	public ResponseEntity<ApiResponse<ProductivityMetric>> saveMetric(@Valid @RequestBody MetricRequest request,
 			@AuthenticationPrincipal UserDetails ud) {
@@ -78,7 +76,6 @@ public class DeveloperController {
 		return ResponseEntity.ok(ApiResponse.ok("Metric saved", productivityService.upsertMetric(dev, request)));
 	}
 
-	// ── Delete metric ─────────────────────────────────────────────────────────
 	@DeleteMapping("/metrics/{id}")
 	public ResponseEntity<ApiResponse<Void>> deleteMetric(@PathVariable Long id,
 			@AuthenticationPrincipal UserDetails ud) {
@@ -86,7 +83,6 @@ public class DeveloperController {
 		return ResponseEntity.ok(ApiResponse.ok("Metric deleted", null));
 	}
 
-	// ── Total score ───────────────────────────────────────────────────────────
 	@GetMapping("/metrics/score")
 	public ResponseEntity<ApiResponse<Double>> getTotalScore(@AuthenticationPrincipal UserDetails ud) {
 		return ResponseEntity
@@ -102,7 +98,6 @@ public class DeveloperController {
 				.ok(ApiResponse.ok("GitHub summary retrieved", productivityService.getGitHubSummaryForDeveloper(dev)));
 	}
 
-	// ── Average score ─────────────────────────────────────────────────────────
 	@GetMapping("/metrics/average")
 	public ResponseEntity<ApiResponse<Double>> getAverageScore(@AuthenticationPrincipal UserDetails ud) {
 		return ResponseEntity.ok(ApiResponse.ok("Average score retrieved",
@@ -131,7 +126,6 @@ public class DeveloperController {
 	}
 
 
-	// ── GitHub repos ──────────────────────────────────────────────────────────
 	@GetMapping("/github/repos")
 	public ResponseEntity<ApiResponse<List<Map<String, Object>>>> getRepos(
 	        @AuthenticationPrincipal UserDetails ud) {
@@ -154,7 +148,6 @@ public class DeveloperController {
 	}
 
 
-	// ── GitHub events ─────────────────────────────────────────────────────────
 	@GetMapping("/github/events")
 	public ResponseEntity<ApiResponse<List<Map<String, Object>>>> getEvents(@AuthenticationPrincipal UserDetails ud) {
 		Developer dev = getDeveloper(ud);
@@ -165,7 +158,6 @@ public class DeveloperController {
 				.ok(ApiResponse.ok("Events retrieved", gitHubService.getUserEvents(dev.getGithubUsername())));
 	}
 
-	// ── Resolve Developer from JWT ────────────────────────────────────────────
 	private Developer getDeveloper(UserDetails ud) {
 		return developerRepository.findByEmail(ud.getUsername())
 				.orElseThrow(() -> new ResourceNotFoundException("Developer", "email", ud.getUsername()));

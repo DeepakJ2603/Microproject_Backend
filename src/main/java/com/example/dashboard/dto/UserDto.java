@@ -18,7 +18,6 @@ public class UserDto {
         this.role = role;
     }
 
-    // getters and setters
     public Long getId() {
         return id;
     }
@@ -43,4 +42,11 @@ public class UserDto {
         this.githubId = githubId;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }

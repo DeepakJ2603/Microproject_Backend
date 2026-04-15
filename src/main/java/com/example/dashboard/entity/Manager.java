@@ -43,7 +43,6 @@ public class Manager {
     @PreUpdate
     protected void onUpdate() { updatedAt = LocalDateTime.now(); }
 
-    // ── Constructors ──────────────────────────────────────────────────────────
     public Manager() {}
 
     public Manager(String fullName, String email, String password) {
@@ -53,7 +52,6 @@ public class Manager {
         this.role     = Role.ROLE_MANAGER;
     }
 
-    // ── Getters & Setters ─────────────────────────────────────────────────────
     public Long          getId()               { return id; }
     public void          setId(Long id)        { this.id = id; }
 

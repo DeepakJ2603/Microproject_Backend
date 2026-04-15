@@ -39,7 +39,6 @@ public class Team {
     @PreUpdate
     protected void onUpdate() { updatedAt = LocalDateTime.now(); }
 
-    // ── Constructors ──────────────────────────────────────────────────────────
     public Team() {}
 
     public Team(String name, Manager manager) {
@@ -53,7 +52,6 @@ public class Team {
         this.manager     = manager;
     }
 
-    // ── Getters & Setters ─────────────────────────────────────────────────────
     public Long          getId()                            { return id; }
     public void          setId(Long id)                     { this.id = id; }
 

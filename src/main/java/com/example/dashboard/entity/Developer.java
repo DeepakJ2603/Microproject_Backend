@@ -40,10 +40,6 @@ public class Developer {
 
     private String avatarUrl;
 
-    /**
-     * ✅ GitHub OAuth access token
-     * Needed for calling GitHub APIs on behalf of this user
-     */
     @Column(name = "github_access_token", length = 2000)
     private String accessToken;
 
@@ -57,7 +53,6 @@ public class Developer {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // ── JPA lifecycle hooks ─────────────────────────────────────────
     @PrePersist
     protected void onCreate() {
         createdAt = updatedAt = LocalDateTime.now();
@@ -68,7 +63,6 @@ public class Developer {
         updatedAt = LocalDateTime.now();
     }
 
-    // ── Constructors ───────────────────────────────────────────────
     public Developer() {}
 
     public Developer(String fullName,
@@ -84,7 +78,6 @@ public class Developer {
         this.role           = Role.ROLE_DEVELOPER;
     }
 
-    // ── Getters & Setters ──────────────────────────────────────────
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -103,7 +96,6 @@ public class Developer {
     public String getAvatarUrl() { return avatarUrl; }
     public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
 
-    // ✅ Access token getters/setters
     public String getAccessToken() { return accessToken; }
     public void setAccessToken(String accessToken) { this.accessToken = accessToken; }
 

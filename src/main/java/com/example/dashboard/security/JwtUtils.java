@@ -25,13 +25,11 @@ public class JwtUtils {
     @Value("${app.jwt.expiration-ms}")
     private long jwtExpirationMs;
 
-    // ── Signing Key ───────────────────────────────────────────────────────────
     private Key getSigningKey() {
         byte[] keyBytes = Base64.getDecoder().decode(jwtSecret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    // ── Generate Token ────────────────────────────────────────────────────────
     public String generateToken(String email, String role, Long userId) {
         return Jwts.builder()
                 .setSubject(email)
@@ -43,32 +41,26 @@ public class JwtUtils {
                 .compact();
     }
 
-    // ── Get Email from Token ──────────────────────────────────────────────────
     public String getEmailFromToken(String token) {
         return parseAllClaims(token).getSubject();
     }
 
-    // ── Get Role from Token ───────────────────────────────────────────────────
     public String getRoleFromToken(String token) {
         return parseAllClaims(token).get("role", String.class);
     }
 
-    // ── Get UserId from Token ─────────────────────────────────────────────────
     public Long getUserIdFromToken(String token) {
         return parseAllClaims(token).get("userId", Long.class);
     }
 
-    // ── Get Expiration from Token ─────────────────────────────────────────────
     public Date getExpirationFromToken(String token) {
         return parseAllClaims(token).getExpiration();
     }
 
-    // ── Check if Expired ──────────────────────────────────────────────────────
     public boolean isTokenExpired(String token) {
         return getExpirationFromToken(token).before(new Date());
     }
 
-    // ── Validate Token ────────────────────────────────────────────────────────
     public boolean validateToken(String token) {
         try {
             parseAllClaims(token);
@@ -82,7 +74,6 @@ public class JwtUtils {
         }
     }
 
-    // ── Parse Claims ──────────────────────────────────────────────────────────
     private Claims parseAllClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())

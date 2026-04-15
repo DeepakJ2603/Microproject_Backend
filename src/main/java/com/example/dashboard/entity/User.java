@@ -46,7 +46,6 @@ public class User {
     @PreUpdate
     protected void onUpdate() { updatedAt = LocalDateTime.now(); }
 
-    // ── Constructors ──────────────────────────────────────────────────────────
     public User() {}
 
     public User(String email, String password, Role role, String fullName) {
@@ -63,7 +62,6 @@ public class User {
         this.role     = role;
     }
 
-    // ── Getters & Setters ─────────────────────────────────────────────────────
     public Long          getId()                      { return id; }
     public void          setId(Long id)               { this.id = id; }
 

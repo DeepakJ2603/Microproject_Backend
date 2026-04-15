@@ -34,7 +34,6 @@ public class ManagerController {
         this.developerRepository = developerRepository;
     }
 
-    // ── Create Team ───────────────────────────────────────────────────────────
     @PostMapping("/teams")
     public ResponseEntity<ApiResponse<TeamResponse>> createTeam(
             @Valid @RequestBody TeamRequest request,
@@ -43,7 +42,6 @@ public class ManagerController {
                 teamService.createTeam(request, getManager(ud))));
     }
 
-    // ── Update Team ───────────────────────────────────────────────────────────
     @PutMapping("/teams/{id}")
     public ResponseEntity<ApiResponse<TeamResponse>> updateTeam(
             @PathVariable Long id,
@@ -53,7 +51,6 @@ public class ManagerController {
                 teamService.updateTeam(id, request, getManager(ud))));
     }
 
-    // ── Delete Team ───────────────────────────────────────────────────────────
     @DeleteMapping("/teams/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteTeam(
             @PathVariable Long id,
@@ -62,7 +59,6 @@ public class ManagerController {
         return ResponseEntity.ok(ApiResponse.ok("Team deleted", null));
     }
 
-    // ── Get My Teams ──────────────────────────────────────────────────────────
     @GetMapping("/teams")
     public ResponseEntity<ApiResponse<List<TeamResponse>>> getMyTeams(
             @AuthenticationPrincipal UserDetails ud) {
@@ -70,14 +66,12 @@ public class ManagerController {
                 teamService.getTeamsByManager(getManager(ud))));
     }
 
-    // ── Get All Teams ─────────────────────────────────────────────────────────
     @GetMapping("/teams/all")
     public ResponseEntity<ApiResponse<List<TeamResponse>>> getAllTeams() {
         return ResponseEntity.ok(ApiResponse.ok("All teams retrieved",
                 teamService.getAllTeams()));
     }
 
-    // ── Get Team By ID ────────────────────────────────────────────────────────
     @GetMapping("/teams/{id}")
     public ResponseEntity<ApiResponse<TeamResponse>> getTeamById(
             @PathVariable Long id) {
@@ -85,7 +79,6 @@ public class ManagerController {
                 teamService.getTeamById(id)));
     }
 
-    // ── Add Member ────────────────────────────────────────────────────────────
     @PostMapping("/teams/{teamId}/members/{devId}")
     public ResponseEntity<ApiResponse<TeamResponse>> addMember(
             @PathVariable Long teamId,
@@ -95,7 +88,6 @@ public class ManagerController {
                 teamService.addMember(teamId, devId, getManager(ud))));
     }
 
-    // ── Remove Member ─────────────────────────────────────────────────────────
     @DeleteMapping("/teams/{teamId}/members/{devId}")
     public ResponseEntity<ApiResponse<TeamResponse>> removeMember(
             @PathVariable Long teamId,
@@ -105,14 +97,12 @@ public class ManagerController {
                 teamService.removeMember(teamId, devId, getManager(ud))));
     }
 
-    // ── Get All Developers ────────────────────────────────────────────────────
     @GetMapping("/developers")
     public ResponseEntity<ApiResponse<?>> getDevelopers() {
         return ResponseEntity.ok(ApiResponse.ok("Developers retrieved",
                 developerRepository.findAll()));
     }
 
-    // ── Get Member Count ──────────────────────────────────────────────────────
     @GetMapping("/teams/{id}/members/count")
     public ResponseEntity<ApiResponse<Long>> getMemberCount(
             @PathVariable Long id) {
@@ -120,7 +110,6 @@ public class ManagerController {
                 teamService.getMemberCount(id)));
     }
 
-    // ── Resolve Manager from JWT ──────────────────────────────────────────────
     private Manager getManager(UserDetails ud) {
         return managerRepository.findByEmail(ud.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException(

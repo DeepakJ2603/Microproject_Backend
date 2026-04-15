@@ -22,16 +22,13 @@ public class ProductivityMetric {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	// ── Developer owning this metric ─────────────────────────────────────────
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "developer_id", nullable = false)
 	private Developer developer;
 
-	// ── Metric date (one row per developer per day) ──────────────────────────
 	@Column(name = "metric_date", nullable = false)
 	private LocalDate metricDate;
 
-	// ── Raw activity counts ──────────────────────────────────────────────────
 	@Column(nullable = false)
 	private Integer commitsCount = 0;
 
@@ -41,16 +38,13 @@ public class ProductivityMetric {
 	@Column(nullable = false)
 	private Integer issuesCount = 0;
 
-	// ── Computed productivity score ──────────────────────────────────────────
 	@Column(nullable = false)
 	private Double productivityScore = 0.0;
 
-	// ── Business logic ───────────────────────────────────────────────────────
 	public void recalculate() {
 		this.productivityScore = (commitsCount * 1.0) + (prsCount * 2.0) + (issuesCount * 1.5);
 	}
 
-	// ── Getters & Setters ────────────────────────────────────────────────────
 	public Long getId() {
 		return id;
 	}

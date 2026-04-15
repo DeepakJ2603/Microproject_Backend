@@ -1,7 +1,6 @@
 package com.example.dashboard.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "team_members")
@@ -26,7 +25,6 @@ public class TeamMember {
         this.developer = developer;
     }
 
-    // getters and setters
     public Long getId() {
         return id;
     }

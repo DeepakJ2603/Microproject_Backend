@@ -56,7 +56,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         OAuth2User oAuth2User = authToken.getPrincipal();
 
-        // ── Profile info ───────────────────────────────
         String githubId       = getAttr(oAuth2User, "id");
         String githubUsername = getAttr(oAuth2User, "login");
         String avatarUrl      = getAttr(oAuth2User, "avatar_url");
@@ -68,7 +67,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                         ? githubUsername + "@github.com"
                         : rawEmail;
 
-        // ✅ Correct way to load authorized client
         OAuth2AuthorizedClient authorizedClient =
                 authorizedClientService.loadAuthorizedClient(
                         authToken.getAuthorizedClientRegistrationId(),
@@ -80,7 +78,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             accessToken = authorizedClient.getAccessToken().getTokenValue();
         }
 
-        // ── Upsert Developer ───────────────────────────
         Developer developer = developerRepository
                 .findByGithubId(githubId)
                 .orElseGet(() -> {
@@ -98,14 +95,12 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         developerRepository.save(developer);
 
-        // ── Generate App JWT ───────────────────────────
         String token = jwtUtils.generateToken(
                 developer.getEmail(),
                 developer.getRole().name(),
                 developer.getId()
         );
 
-        // ✅ IMPORTANT: use '&' not '&amp;'
         String redirectUrl =
                 frontendUrl + "/oauth2/callback"
                         + "?token=" + URLEncoder.encode(token, StandardCharsets.UTF_8)

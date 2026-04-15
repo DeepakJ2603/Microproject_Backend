@@ -14,9 +14,7 @@ public class MetricRequest {
     @Min(value = 0, message = "Issues count cannot be negative")
     private int issuesCount;
 
-    private LocalDate metricDate;   // optional — defaults to today if null
-
-    // ── getters & setters ─────────────────────────────────────────────────────
+    private LocalDate metricDate;  
     public int       getCommitsCount()          { return commitsCount; }
     public void      setCommitsCount(int c)     { this.commitsCount = c; }
 

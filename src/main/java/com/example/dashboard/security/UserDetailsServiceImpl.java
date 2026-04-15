@@ -33,7 +33,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
 
-        // ── Step 1: Check User table (Super Admin) ────────────────────────────
         var userOpt = userRepository.findByEmail(email);
         if (userOpt.isPresent()) {
             User u = userOpt.get();
@@ -44,7 +43,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             );
         }
 
-        // ── Step 2: Check Manager table ───────────────────────────────────────
         var managerOpt = managerRepository.findByEmail(email);
         if (managerOpt.isPresent()) {
             Manager m = managerOpt.get();
@@ -55,13 +53,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             );
         }
 
-        // ── Step 3: Check Developer table (GitHub OAuth) ──────────────────────
         var developerOpt = developerRepository.findByEmail(email);
         if (developerOpt.isPresent()) {
             Developer d = developerOpt.get();
             return buildUserDetails(
                     d.getEmail(),
-                    "",               // developers use OAuth — no password
+                    "",              
                     d.getRole().name()
             );
         }
@@ -70,7 +67,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 "No account found with email: " + email);
     }
 
-    // ── Build Spring Security UserDetails object ──────────────────────────────
     private UserDetails buildUserDetails(String email,
                                          String password,
                                          String role) {

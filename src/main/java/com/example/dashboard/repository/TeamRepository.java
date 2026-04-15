@@ -12,16 +12,12 @@ import java.util.List;
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Long> {
 
-	// ── Find all teams managed by a specific manager ──────────────────────────
 	List<Team> findByManager(Manager manager);
 
-	// ── Find all teams by manager ID ──────────────────────────────────────────
 	List<Team> findByManagerId(Long managerId);
 
-	// ── Check if team name exists under same manager ──────────────────────────
 	boolean existsByNameAndManager(String name, Manager manager);
 
-	// ── Find teams with member count ──────────────────────────────────────────
 	@Query("SELECT t FROM Team t WHERE t.manager = :manager " + "ORDER BY t.createdAt DESC")
 	List<Team> findByManagerOrderByCreatedAtDesc(@Param("manager") Manager manager);
 }

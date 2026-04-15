@@ -31,7 +31,6 @@ public class AdminController {
         this.developerRepository = developerRepository;
     }
 
-    // ── Create Manager ────────────────────────────────────────────────────────
     @PostMapping("/managers")
     public ResponseEntity<ApiResponse<Manager>> createManager(
             @Valid @RequestBody RegisterManagerRequest request) {
@@ -39,7 +38,6 @@ public class AdminController {
                 authService.registerManager(request)));
     }
 
-    // ── Update Manager ────────────────────────────────────────────────────────
     @PutMapping("/managers/{id}")
     public ResponseEntity<ApiResponse<Manager>> updateManager(
             @PathVariable Long id,
@@ -48,7 +46,6 @@ public class AdminController {
                 authService.updateManager(id, request)));
     }
 
-    // ── Delete Manager ────────────────────────────────────────────────────────
     @DeleteMapping("/managers/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteManager(
             @PathVariable Long id) {
@@ -56,21 +53,18 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.ok("Manager deleted", null));
     }
 
-    // ── Get All Managers ──────────────────────────────────────────────────────
     @GetMapping("/managers")
     public ResponseEntity<ApiResponse<List<Manager>>> getManagers() {
         return ResponseEntity.ok(ApiResponse.ok("Managers retrieved",
                 managerRepository.findAll()));
     }
 
-    // ── Get All Developers ────────────────────────────────────────────────────
     @GetMapping("/developers")
     public ResponseEntity<ApiResponse<List<Developer>>> getDevelopers() {
         return ResponseEntity.ok(ApiResponse.ok("Developers retrieved",
                 developerRepository.findAll()));
     }
 
-    // ── Delete Developer ──────────────────────────────────────────────────────
     @DeleteMapping("/developers/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteDeveloper(
             @PathVariable Long id) {
